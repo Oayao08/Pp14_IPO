@@ -1,45 +1,58 @@
-body {
-  font-family: Arial;
-  background: #eef7f6;
-  text-align: center;
-  color: #333;
-}
+    body {
+      margin: 0;
+      font-family: Garamond, serif;
+      background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
 
-h1 {
-  color: #2a9d8f;
-}
+    .container {
+      max-width: 500px;
+    }
 
-.container {
-  display: grid;
-  gap: 20px;
-  max-width: 600px;
-  margin: auto;
-}
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
 
-section {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-}
+    p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      color: #ccc;
+    }
 
-button {
-  background: #2a9d8f;
-  color: white;
-  border: none;
-  padding: 8px;
-  margin: 5px;
-  cursor: pointer;
-}
+    .btn {
+      display: block;
+      margin: 10px auto;
+      padding: 12px 20px;
+      width: 80%;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-button:hover {
-  background: #21867a;
-}
+    .primary {
+      background-color: #ffffff;
+      color: #000;
+    }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
+    .primary:hover {
+      background-color: #ddd;
+    }
 
-li {
-  margin: 5px;
-}
+    .secondary {
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+    }
+
+    .secondary:hover {
+      background-color: white;
+      color: black;
+    }

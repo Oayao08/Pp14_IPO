@@ -7,53 +7,13 @@
 </head>
 <body>
 
-<h1>Focusly App</h1>
+  <div class="container">
+    <h1>Focusly</h1>
+    <p>Organitza el teu temps, millora la concentració i aconsegueix els teus objectius.</p>
 
-<div class="container">
+    <button class="btn primary">Registrar-se / Iniciar sessió</button>
+    <button class="btn secondary">Veure demo</button>
+  </div>
 
-  <!-- Dashboard -->
-  <section>
-    <h2>Panell</h2>
-    <p id="resum">Avui no has completat tasques encara.</p>
-  </section>
-
-  <!-- Tasques -->
-  <section>
-    <h2>Tasques</h2>
-    <input type="text" id="taskInput" placeholder="Nova tasca...">
-    <select id="priority">
-      <option>Alta</option>
-      <option>Mitjana</option>
-      <option>Baixa</option>
-    </select>
-    <button onclick="addTask()">Afegir</button>
-
-    <ul id="taskList"></ul>
-  </section>
-
-  <!-- Pomodoro -->
-  <section>
-    <h2>Pomodoro</h2>
-    <p id="timer">30:00</p>
-    <button onclick="startPomodoro()">Començar</button>
-  </section>
-
-  <!-- Hàbits -->
-  <section>
-    <h2>Hàbits</h2>
-    <button onclick="addHabit()">Marcar dia completat</button>
-    <p>Ratxa: <span id="streak">0</span> dies</p>
-  </section>
-
-  <!-- Mode focus -->
-  <section>
-    <h2>Mode Focus</h2>
-    <button onclick="toggleFocus()">Activar</button>
-    <p id="focusMsg"></p>
-  </section>
-
-</div>
-
-<script src="javascript.js"></script>
 </body>
 </html>
