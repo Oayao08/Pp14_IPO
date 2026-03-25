@@ -140,10 +140,10 @@ function updateHabitUI() {
 let focus = false;
 
 const frases = [
-  "🚀 Centra't, el teu futur t'ho agrairà",
-  "📵 Menys scroll, més control",
-  "🔥 Estàs construint disciplina",
-  "💡 Un petit esforç avui = gran resultat demà"
+  "Centra't, el teu futur t'ho agrairà",
+  "Menys scroll, més control",
+  "Estàs construint disciplina",
+  "Un petit esforç avui = gran resultat demà"
 ];
 
 function toggleFocus() {
