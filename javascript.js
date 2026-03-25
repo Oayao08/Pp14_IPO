@@ -1,35 +1,46 @@
-console.log("Funciona correctament");
+console.log("Funciona correctament!");
 
-let tasks = [];
-let streak = 0;
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let streak = JSON.parse(localStorage.getItem("streak")) || 0;
+let lastHabitDate = localStorage.getItem("lastHabitDate") || null;
+
 let time = 1500;
+let isBreak = false;
 let interval;
 
-console.log(tasks);
-console.log(streak);
-console.log(time);
 
-// Afegir tasca
 function addTask() {
-  let text = document.getElementById("taskInput").value;
-  let priority = document.getElementById("priority").value;
+  const text = document.getElementById("taskInput").value;
+  const priority = document.getElementById("priority").value;
 
   if (!text) return;
 
-  tasks.push({ text, priority, done: false });
+  tasks.push({
+    text,
+    priority,
+    done: false
+  });
+
+  saveData();
   renderTasks();
+  document.getElementById("taskInput").value = "";
 }
 
-// Renderitzar tasques
 function renderTasks() {
-  let list = document.getElementById("taskList");
+  const list = document.getElementById("taskList");
   list.innerHTML = "";
 
+  // Ordenar per prioritat
+  const priorityOrder = { "Alta": 1, "Mitjana": 2, "Baixa": 3 };
+  tasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+
   tasks.forEach((task, index) => {
-    let li = document.createElement("li");
+    const li = document.createElement("li");
 
     li.innerHTML = `
-      ${task.text} (${task.priority})
+      <span style="${task.done ? 'text-decoration:line-through' : ''}">
+        ${task.text} (${task.priority})
+      </span>
       <button onclick="completeTask(${index})">✔</button>
       <button onclick="deleteTask(${index})">❌</button>
     `;
@@ -40,65 +51,124 @@ function renderTasks() {
   updateSummary();
 }
 
-// Completar tasca
 function completeTask(i) {
-  tasks[i].done = true;
-  updateSummary();
-}
-
-// Eliminar tasca
-function deleteTask(i) {
-  tasks.splice(i, 1);
+  tasks[i].done = !tasks[i].done;
+  saveData();
   renderTasks();
 }
 
-// Resum diari
-function updateSummary() {
-  let completed = tasks.filter((t) => t.done).length;
-  document.getElementById("resum").innerText =
-    `Has completat ${completed} tasques avui.`;
+function deleteTask(i) {
+  tasks.splice(i, 1);
+  saveData();
+  renderTasks();
 }
 
-// Pomodoro
+
+function updateSummary() {
+  const completed = tasks.filter(t => t.done).length;
+  const total = tasks.length;
+
+  document.getElementById("resum").innerText =
+    `✔ ${completed}/${total} tasques completades avui`;
+}
+
+// Reset diari
+function dailyReset() {
+  const today = new Date().toDateString();
+  const lastVisit = localStorage.getItem("lastVisit");
+
+  if (lastVisit !== today) {
+    tasks = [];
+    saveData();
+    localStorage.setItem("lastVisit", today);
+  }
+}
+
 function startPomodoro() {
   clearInterval(interval);
 
   interval = setInterval(() => {
     time--;
-    let min = Math.floor(time / 60);
-    let sec = time % 60;
+
+    const min = Math.floor(time / 60);
+    const sec = time % 60;
 
     document.getElementById("timer").innerText =
       `${min}:${sec < 10 ? "0" : ""}${sec}`;
 
     if (time <= 0) {
       clearInterval(interval);
-      alert("Descans!");
-      time = 1500;
+
+      if (!isBreak) {
+        alert("💪 Bona feina! Descans de 5 minuts");
+        time = 300;
+        isBreak = true;
+        startPomodoro();
+      } else {
+        alert("⏳ Tornem a la feina!");
+        time = 1500;
+        isBreak = false;
+      }
     }
   }, 1000);
 }
 
-// Hàbits
 function addHabit() {
-  streak++;
+  const today = new Date().toDateString();
+
+  if (lastHabitDate === today) return;
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (lastHabitDate === yesterday.toDateString()) {
+    streak++;
+  } else {
+    streak = 1;
+  }
+
+  lastHabitDate = today;
+
+  saveData();
+  updateHabitUI();
+}
+
+function updateHabitUI() {
   document.getElementById("streak").innerText = streak;
 }
 
-// Mode focus
 let focus = false;
+
+const frases = [
+  "🚀 Centra't, el teu futur t'ho agrairà",
+  "📵 Menys scroll, més control",
+  "🔥 Estàs construint disciplina",
+  "💡 Un petit esforç avui = gran resultat demà"
+];
 
 function toggleFocus() {
   focus = !focus;
 
-  let msg = document.getElementById("focusMsg");
+  const msg = document.getElementById("focusMsg");
 
   if (focus) {
-    msg.innerText = "🚫 Xarxes bloquejades. Mantén el focus!";
     document.body.style.background = "#d8f3dc";
+    msg.innerText = frases[Math.floor(Math.random() * frases.length)];
+
+    // Simulació bloqueig
+    alert("🚫 Evita xarxes socials mentre estàs en mode focus!");
   } else {
-    msg.innerText = "";
     document.body.style.background = "#eef7f6";
+    msg.innerText = "";
   }
 }
 
+function saveData() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  localStorage.setItem("streak", JSON.stringify(streak));
+  localStorage.setItem("lastHabitDate", lastHabitDate);
+}
+
+dailyReset();
+renderTasks();
+updateHabitUI();
